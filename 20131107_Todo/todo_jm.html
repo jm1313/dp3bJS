@@ -1,10 +1,87 @@
 <html>
 <head>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+      .done-true {
+          text-decoration: line-through;
+          color: grey;
+      }
+    </style>
 </head>
 <body>
-test
+<scrit>
+  
+  $(function(){
+    var ulstyle = $('.unstyled li');
+    var todo = {
+
+        count: function(){
+            var all = $('.unstyled li').size();
+            var goal = $('.unstyled li .done-true').size();
+            $('.all').html(all);
+            $('.sel').html(goal);
+        },
+        done: function(){
+            ulstyle.each( function(){
+
+                if ( !$(this).find('input').is(':checked') ){
+                    $(this).find('span').removeClass('done-true');
+                } else {
+                    $(this).find('span').addClass('done-true'); 
+                }
+            });
+            this.count();
+        },
+        archive: function(){
+            ulstyle.each( function(){
+                if ( $(this).find('input').is(':checked') ){
+                   $(this).remove();
+                } 
+            });
+            this.count();
+        },
+        add: function(){
+            var newTodo = $(".newTodo");
+            //check
+            //add
+            $('.unstyled').append("<li><input type='checkbox'/><span>"+ newTodo.val() +"</span></li>");
+            newTodo.val('');
+            todo.init();
+            this.count();
+        },
+        init: function(){
+            $("input[type='checkbox']").live('click',function(){ todo.done(); });
+            $('a').click(function(){ todo.archive(); });
+            $('.add').live('click', function(){ todo.add(); });
+            this.done();
+        }
+    };
+    todo.init();
+});
+</scrit>
 </body>
 
+<h2>Todo</h2>
+<span class="sel"></span> of <span class="all"></span> remaining
+[ <a class="btn" href="#">archive</a> ]
+
+<ul class="unstyled">
+     <li>
+         <input type="checkbox"/>
+        <span>study</span>
+      </li>
+            <li>
+                <input type="checkbox"/>
+        <span>shopping</span>
+      </li>
+            <li>
+                <input type="checkbox"/>
+        <span>wdwdwd</span>
+      </li>
+</ul>
+
+<input type="text" class="newTodo" ng-model="todoText"  size="30"
+       placeholder="add new todo here">
+<button class="add">add</button>
 
 </html>
